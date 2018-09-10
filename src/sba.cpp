@@ -36,23 +36,21 @@
 // Visual Odometry classes and functions
 //
 
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include "sparse_bundle_adjustment/sba.h"
 
 using namespace Eigen;
 using namespace std;
+namespace pt = boost::posix_time;
 
 //#define DEBUG
 
 // elapsed time in microseconds
-#include <sys/time.h>
 static long long utime()
 {
-  timeval tv;
-  gettimeofday(&tv,NULL);
-  long long ts = tv.tv_sec;
-  ts *= 1000000;
-  ts += tv.tv_usec;
-  return ts;
+  pt::ptime current_date_microseconds = pt::microsec_clock::local_time();
+
+  return current_date_microseconds.time_of_day().total_milliseconds();
 }
 
 

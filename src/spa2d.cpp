@@ -35,28 +35,29 @@
 //
 // Sparse Pose Adjustment classes and functions, 2D version
 //
+#ifdef WIN32
+#define _USE_MATH_DEFINES
+#include <math.h>
+#endif
 
 #include <stdio.h>
 #include "sparse_bundle_adjustment/spa2d.h"
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include <Eigen/Cholesky>
 
 using namespace Eigen;
 using namespace std;
+namespace pt = boost::posix_time;
 
 #include <iostream>
 #include <iomanip>
 #include <fstream>
-#include <sys/time.h>
 
 // elapsed time in microseconds
 static long long utime()
 {
-  timeval tv;
-  gettimeofday(&tv,NULL);
-  long long ts = tv.tv_sec;
-  ts *= 1000000;
-  ts += tv.tv_usec;
-  return ts;
+  pt::ptime current_date_microseconds = pt::microsec_clock::local_time();
+  return current_date_microseconds.time_of_day().total_milliseconds();
 }
 
 namespace sba

@@ -51,9 +51,7 @@
 #include <Eigen/StdVector>
 
 // CSparse header
-extern "C" {
-#include "suitesparse/cs.h"
-}
+#include <suitesparse/cs.h>
 #include <vector>
 #include <map>
 

@@ -51,26 +51,24 @@
 
 #include <stdio.h>
 #include "sparse_bundle_adjustment/sba.h"
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include <Eigen/Cholesky>
 
 using namespace Eigen;
 using namespace std;
+namespace pt = boost::posix_time;
 
 #include <iostream>
 #include <iomanip>
 #include <fstream>
-#include <sys/time.h>
 #include <utility>
 
 // elapsed time in microseconds
 static long long utime()
 {
-  timeval tv;
-  gettimeofday(&tv,nullptr);
-  long long ts = tv.tv_sec;
-  ts *= 1000000;
-  ts += tv.tv_usec;
-  return ts;
+  pt::ptime current_date_microseconds = pt::microsec_clock::local_time();
+
+  return current_date_microseconds.time_of_day().total_milliseconds();
 }
 
 namespace sba
