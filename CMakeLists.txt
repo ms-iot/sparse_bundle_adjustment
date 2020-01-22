@@ -22,8 +22,9 @@ add_definitions(${EIGEN3_DEFINITIONS})
 
 INCLUDE_DIRECTORIES(include)
 
+if (NOT MSVC)
 include(${USE_SuiteSparse})
-
+endif()
 
 catkin_package(
   INCLUDE_DIRS include
@@ -35,7 +36,13 @@ add_definitions(-DSBA_CHOLMOD)
 # SBA library
 add_library(sba STATIC src/sba.cpp src/spa.cpp src/spa2d.cpp src/csparse.cpp src/proj.cpp src/node.cpp src/sba_file_io.cpp)
 #rosbuild_add_compile_flags(sba ${SSE_FLAGS})
+if (MSVC)
+set_target_properties(${SuiteSparse_LIBRARIES} PROPERTIES MAP_IMPORTED_CONFIG_RELWITHDEBINFO RELEASE)
+target_link_libraries(sba ${SuiteSparse_LIBRARIES} ${Boost_LIBRARIES})
+else()
 target_link_libraries(sba ${SuiteSparse_LIBRARIES} cholmod cxsparse ${SuiteSparse_LIBRARIES} ${Boost_LIBRARIES})
+endif()
+
 
 install(DIRECTORY include/sparse_bundle_adjustment/
         DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION})
